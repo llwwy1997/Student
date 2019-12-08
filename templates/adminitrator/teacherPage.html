@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/static/js/layui.all.js"></script>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <script src="/static/js/Vue.js"></script>
+    <script src="/static/js/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+<style>
+    html,body{height:100%}
+    body{margin: 10px;}
+    .demo-carousel{height: 200px; line-height: 200px; text-align: center;}
+    #PageNum{ position:absolute; bottom: 0;right: 0;}
+    #PageNum ul{margin-right: 20px;}
+    #PageNum li{ text-align:center; display:inline-block; padding:0px 5px;}
+    #PageNum li a{ display:inline-block; background-color:#FFF; height:30px; line-height:30px; vertical-align:middle; font-size:12px; padding:0px 10px;-webkit-border-radius: 30px;border-radius:30px; text-decoration:none; color:#333;}
+    #PageNum li a:hover{ background-color:#eb6d48; color:#FFF;}
+  </style>
+</head>
+<body>
+<!--<table class="layui-hide" id="demo" lay-filter="test"></table>-->
+<div id="app" style="height:100%;">
+<a class="layui-btn layui-btn-xs" @click='test()' >新增</a> 
+<table lay-filter="userlist-table" width="100%" style="text-align: center;"> 
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>班级名称</th>
+      <th>创建时间</th>
+      <th>班主任</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+    {% for teacher in teachers %}
+    <tr>
+      <td >{{ teacher.t_id }}</td>
+      <td >{{ teacher.t_name }}</td>
+      <td >{{ grade.g_create_time }}</td>
+      <td >{{ grade.g_mainteacher }}</td>
+      <td > 
+      <a class="layui-btn layui-btn-xs" @click='editGrade({{ grade.g_id }})' >编辑</a> 
+      <a class="layui-btn layui-btn-danger layui-btn-xs" @click='delGrade({{ grade.g_id }})' >删除</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div id="PageNum">
+        <p class="msg">共找到<span style="color: red">{{paginate.total}}</span>条匹配记录</p>
+         <ul>
+         <li>
+             <span>每页显示
+                <a href="/admin/gradeManger.html?page_num=5">5</a>
+             {% if paginate.total>5 %}
+                 <a href="/admin/gradeManger.html?page_num=10">10</a>
+                 {% endif %}
+             {% if paginate.total>10 %}
+                 <a href="/admin/gradeManger.html?page_num=15">15</a>
+             {% endif %}
+
+             条数据</span>
+         </li>
+        <li><a href="/admin/gradeManger.html?page=1">首页</a></li>
+        {% if paginate.has_prev %}
+            <li><a href="/admin/gradeManger.html?page={{ paginate.prev_num }}">上一页</a></li>
+        {% endif %}
+
+        {% for p  in paginate.iter_pages() %}
+            <li>
+                {% if p %}
+                    {% if p != paginate.page %}
+                    <a href="/admin/gradeManger.html?page={{ p }}">{{ p }}</a>
+                    {% else %}
+                    <span> {{ p }} </span>
+                    {% endif %}
+                {% else %}
+                    <span>...</span>
+                {% endif %}
+            </li>
+        {% endfor  %}
+
+        {% if paginate.has_next %}
+            <li><a href="/admin/gradeManger.html?page={{ paginate.next_num }}">下一页</a></li>
+        {% endif %}
+            <li><a href="/admin/gradeManger.html?page={{ paginate.pages }}">尾页</a></li>
+        <span>| 共{{paginate.pages}}页 | 当前第{{paginate.page}}页</span>
+         </ul>
+    </div>
+</div>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+          this_id : '',
+        },
+        methods:{
+            test:function () {
+                var width=document.body.clientWidth*0.5+'px';
+                var height=document.body.clientHeight*0.5+'px';
+                layer.open({
+                    type: 2, //类型，解析url
+                    closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                    title: '新增', //页面标题
+                    shadeClose: true, //点击遮罩区域是否关闭页面
+                    shade: 0.8,
+                    area: [width, height],  //弹出层页面比例
+                    content: '127.0.0.1:5000/admin/index.html',
+                });
+                alert([width, height]);
+            },
+            editGrade:function (id) {
+                layer.open({
+                    type: 2, //类型，解析url
+                    closeBtn: 1, //关闭按钮是否显示 1显示0不显示
+                    title: '编辑', //页面标题
+                    shadeClose: true, //点击遮罩区域是否关闭页面
+                    shade: 0.8,
+                    area: [width, height],  //弹出层页面比例
+                    content: '/admin/index.html',
+                });
+            },
+            delGrade:function (id) {
+                if (confirm('确定要删除吗?'))
+                {
+                    $.post(
+                    "/admin/delGradeById.html",
+                    id=id,
+                ),
+                    function (msg) {
+                        alert(msg);
+                        window.location.reload();
+                    }
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

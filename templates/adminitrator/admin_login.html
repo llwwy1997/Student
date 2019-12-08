@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <script src="/static/js/layui.all.js"></script>
+    <script src="/static/js/Vue.js"></script>
+    <title>后台登录</title>
+    <style>
+        *{margin:0;padding:0;}
+    </style>
+</head>
+<body>
+{#    <div class="layui-tab">#}
+{#      <ul class="layui-tab-title">#}
+{#        <li class="layui-this">标题一</li>#}
+{#        <li>标题二</li>#}
+{#        <li>标题三</li>#}
+{#      </ul>#}
+{#      <div class="layui-tab-content">#}
+{#        <div class="layui-tab-item layui-show">内容1</div>#}
+{#        <div class="layui-tab-item">内容2</div>#}
+{#        <div class="layui-tab-item">内容3</div>#}
+{#      </div>#}
+{#    </div>#}
+<div class="layui-inline" style="position:absolute;top: 50%;left: 50%;right: 0;bottom: 0;transform: translate(-50%, -50%);">
+    <form class="layui-form" action="/admin/login.html" id="login_form" method="post">
+        <div class="layui-form-item">
+            <span style="color: red">{{ msg }}</span>
+            <label class="layui-form-label">用户名:</label>
+            <div class="layui-input-block">
+              <input type="text" name="admin_name" id="admin_name" placeholder="请输入登录账号" required lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">密码:</label>
+            <div class="layui-input-inline">
+              <input type="password" name="admin_passwd" id="admin_passwd" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+    </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+    <script>
+        var vm = new Vue({
+            el:'#login_form',
+            data:{
+                name:5,
+                passwd:3
+            },
+
+        })
+    </script>
+</body>
+</html>
