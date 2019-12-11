@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../static/css/layui.css">
+    <link rel="stylesheet" href="/static/css/layui.css">
     <script src="/static/js/jquery.js"></script>
-    <script src="../src/layui.js"></script>
+    <script src="/static/js/layer.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/static/css/layer.css">
     <title>学生管理系统</title>
     <script type="text/javascript">
         $(function () {
@@ -20,19 +21,6 @@
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
     <div class="layui-logo">学生管理系统</div>
-    <ul class="layui-nav layui-layout-left">
-      <li class="layui-nav-item"><a href="">控制台</a></li>
-      <li class="layui-nav-item"><a href="">商品管理</a></li>
-      <li class="layui-nav-item"><a href="">用户</a></li>
-      <li class="layui-nav-item">
-        <a href="javascript:;">其它系统</a>
-        <dl class="layui-nav-child">
-          <dd><a href="">邮件管理</a></dd>
-          <dd><a href="">消息管理</a></dd>
-          <dd><a href="">授权管理</a></dd>
-        </dl>
-      </li>
-    </ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
         <a href="javascript:;">
@@ -51,7 +39,7 @@
   <div class="layui-side layui-bg-black">
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-      <ul class="layui-nav layui-nav-tree site-demo-nav"  lay-filter="test">
+      <ul class="layui-nav layui-nav-tree" >
         <li class="layui-nav-item layui-nav-itemed">
           <a class="" href="javascript:;" data-url="/admin/generalLook.html">总体概况<span class="layui-nav-more"></span></a>
           <dl class="layui-nav-child">
@@ -63,10 +51,10 @@
           <a href="javascript:void(0);" data-url="/admin/gradeManger.html">班级管理</a>
         </li>
           <li class="layui-nav-item">
-          <a href="javascript:void(0);" data-url="/admin/studentMenage.html">学生管理</a>
+          <a href="javascript:void(0);" data-url="/admin/studentManage.html">学生管理</a>
         </li>
         <li class="layui-nav-item">
-            <a href="javascript:void(0);" data-url="/admin/teacherMenage.html">教师管理</a>
+            <a href="javascript:void(0);" data-url="/admin/teacherManage.html">教师管理</a>
         </li>
       </ul>
     </div>

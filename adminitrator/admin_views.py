@@ -45,40 +45,61 @@ def gradeManger():
     page_num = int(request.args.get('page_num', 5))
     paginate = Grade.query.order_by('g_id').paginate(page, page_num)
     grades = paginate.items
-    return render_template('adminitrator/gradePage.html',grades=grades,paginate=paginate)
-
-
+    teachers = Teacher.query.order_by('t_id')
+    return render_template('adminitrator/gradePage.html',grades=grades,paginate=paginate,teachers=teachers)
 
 @is_login
 @admin_blueprint.route('/getGradeById.html',methods=['GET'])
 def getGradeById():
     id = int(request.args.get('id'))
     grade = Grade.query.filter_by(g_id =id).first()
-    return render_template('adminitrator/gradeEditPage.html',grade=grade)
+    teachers = Teacher.query.order_by('t_id')
+    return render_template('adminitrator/gradeEditPage.html',grade=grade,teachers=teachers)
+
+
+@admin_blueprint.route('/addGrade.html',methods=['POST'])
+def addGrade():
+    g_name = request.form.get('g_name')
+    g_mainteacher = request.form.get('t_id')
+    grade = Grade.query.filter_by(g_name =g_name).first()
+    if grade:
+        msg = '班级名称已存在'
+    else:
+        newgrade = Grade(g_name,g_mainteacher)
+        newgrade.save()
+        msg = '添加成功'
+    return msg
 
 
 @is_login
 @admin_blueprint.route('/delGradeById.html',methods=['POST'])
 def delGradeById():
-    if request.method == 'POST':
-        id = int(request.form.get('id'))
-        grade = Grade.query.filter_by(g_id =id).first()
-        try:
-            Grade.remove(grade)
-            db.session.commit()
-            msg = '删除成功!'
-        except:
-            msg = '删除失败!'
-        return msg
+    id = request.form.get('id')
+    grade = Grade.query.get(id)
+    try:
+        db.session.delete(grade)
+        db.session.commit()
+        msg = '删除成功!'
+    except Exception as e:
+        msg = '删除失败!'
+        print(e)
+    return msg
 
-
-    else:
-        redirect(url_for('admin.gradeManger'))
 
 @is_login
 @admin_blueprint.route('/editGrade.html',methods=['POST'])
 def editGrade():
-    id = int(request.args.get('id'))
+    g_name = request.form.get('g_id')
+    t_id = request.form.get('t_id')
+    grade = Grade.query.filter_by(g_name=g_name).first()
+
+    try:
+        grade.g_mainteacher = t_id
+        grade.save()
+        msg = '操作成功'
+    except:
+        msg = '操作失败'
+    return msg
 
 
 '''
@@ -86,7 +107,7 @@ def editGrade():
 '''
 
 @is_login
-@admin_blueprint.route('/studentMenage.html',methods=['GET'])
+@admin_blueprint.route('/studentManage.html',methods=['GET'])
 def studentMenage():
     page = int(request.args.get('page', 1))
     page_num = int(request.args.get('page_num', 5))
@@ -95,11 +116,12 @@ def studentMenage():
     return render_template('adminitrator/studentPage.html', students=students, paginate=paginate)
 
 
+
 '''
     教师管理
 '''
 @is_login
-@admin_blueprint.route('/teacherMenage.html',methods=['GET'])
+@admin_blueprint.route('/teacherManage.html',methods=['GET'])
 def teacherMenage():
     page = int(request.args.get('page', 1))
     page_num = int(request.args.get('page_num', 5))
